@@ -45,8 +45,12 @@
         <button @click="surrender">SURRENDER</button>
       </section>
       <section id="log" class="container">
-        <h2></h2>
-        <ul></ul>
+        <h2>Battle Log</h2>
+        <ul>
+          <li v-for="log in logMessages" key="log">
+            {{ log.actionBy }} - {{ log.actionType }} - {{ log.actionValue }}
+          </li>
+        </ul>
       </section>
     </div>
   </body>

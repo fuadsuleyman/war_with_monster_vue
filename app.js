@@ -22,6 +22,7 @@ const app = Vue.createApp({
       monsterHealth: 100,
       currentRound: 0,
       winner: null,
+      logMessages: [],
       //   gameStatus: "Game contiunie",
     };
   },
@@ -69,29 +70,31 @@ const app = Vue.createApp({
       this.monsterHealth = 100;
       this.currentRound = 0;
       this.winner = null;
+      this.logMessages = [];
     },
     attackMonster() {
       this.currentRound++;
       console.log(`remainder: ${this.currentRound % 3}`);
       let onceAttackValue = getRamdomValue(5, 12);
       this.monsterHealth -= onceAttackValue;
-      console.log(`Player Attacked: / Monster Health: ${this.monsterHealth}`);
+      this.addLogs("player", "attack", onceAttackValue);
       this.attackPlayer();
-      console.log(`Monster Attacked: / Player Health: ${this.playerHealth}`);
+
       //   this.gameStatus = checkWinner(this.playerHealth, this.monsterHealth);
     },
     attackPlayer() {
       let monsterAttackValue = getRamdomValue(8, 15);
       this.playerHealth -= monsterAttackValue;
+      this.addLogs("monster", "attack", monsterAttackValue);
     },
     specialAttack() {
       this.currentRound++;
       console.log(`remainder: ${this.currentRound % 3}`);
       let specialAttackValue = getRamdomValue(10, 25);
       this.monsterHealth -= specialAttackValue;
-      console.log(`Special Attacked: / Monster Health: ${this.monsterHealth}`);
+      this.addLogs("player", "special-attack", specialAttackValue);
       this.attackPlayer();
-      console.log(`Monster Attacked: / Player Health: ${this.playerHealth}`);
+
       //   this.gameStatus = checkWinner(this.playerHealth, this.monsterHealth);
     },
     healPlayer() {
@@ -104,11 +107,21 @@ const app = Vue.createApp({
       } else {
         this.playerHealth += healValue;
       }
-      this.attackPlayer;
+      this.addLogs("player", "heal", healValue);
+      this.attackPlayer();
+
       //   this.gameStatus = checkWinner(this.playerHealth, this.monsterHealth);
+    },
+    addLogs(who, what, value) {
+      this.logMessages.unshift({
+        actionBy: who,
+        actionType: what,
+        actionValue: value,
+      });
     },
     surrender() {
       this.winner = "Monster";
+      this.addLogs("player", "surrend", "0");
     },
   },
 });
