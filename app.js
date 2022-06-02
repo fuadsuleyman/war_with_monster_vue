@@ -121,7 +121,7 @@ const app = Vue.createApp({
     },
     surrender() {
       this.winner = "Monster";
-      this.addLogs("player", "surrend", "0");
+      //   this.addLogs("player", "surrend", "0");
     },
   },
 });
