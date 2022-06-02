@@ -2,18 +2,18 @@ function getRamdomValue(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-function checkWinner(playerHealth, monsterHealth) {
-  console.log("Entered to checkwinner");
-  if (playerHealth < 0 && monsterHealth < 0) {
-    return "DRAW";
-  } else if (monsterHealth <= 0 && playerHealth > 0) {
-    return gameStatus = "YOU WIN";
-  } else if (playerHealth <= 0 && monsterHealth > 0) {
-    return gameStatus = "YOU LOSE";
-  } else {
-    return "Game contiunie";
-  }
-}
+// function checkWinner(playerHealth, monsterHealth) {
+//   console.log("Entered to checkwinner");
+//   if (playerHealth < 0 && monsterHealth < 0) {
+//     return "DRAW";
+//   } else if (monsterHealth <= 0 && playerHealth > 0) {
+//     return gameStatus = "YOU WIN";
+//   } else if (playerHealth <= 0 && monsterHealth > 0) {
+//     return gameStatus = "YOU LOSE";
+//   } else {
+//     return "Game contiunie";
+//   }
+// }
 
 const app = Vue.createApp({
   data() {
@@ -21,7 +21,8 @@ const app = Vue.createApp({
       playerHealth: 100,
       monsterHealth: 100,
       currentRound: 0,
-      gameStatus: "Game contiunie",
+      winner: null,
+      //   gameStatus: "Game contiunie",
     };
   },
   computed: {
@@ -38,6 +39,24 @@ const app = Vue.createApp({
       return this.gameStatus;
     },
   },
+  watch: {
+    playerHealth(value) {
+      console.log(`inside watch playerHealth ${value}`);
+      if (value <= 0 && this.monsterHealth <= 0) {
+        this.winner = "It is a draw!";
+      } else if (value <= 0) {
+        this.winner = "Monster";
+      }
+    },
+    monsterHealth(value) {
+      console.log(`inside watch monsterHealth ${value}`);
+      if (value <= 0 && this.playerHealth <= 0) {
+        this.winner = "It is a draw!";
+      } else if (value <= 0) {
+        this.winner = "Player";
+      }
+    },
+  },
   methods: {
     attackMonster() {
       this.currentRound++;
@@ -47,9 +66,7 @@ const app = Vue.createApp({
       console.log(`Player Attacked: / Monster Health: ${this.monsterHealth}`);
       this.attackPlayer();
       console.log(`Monster Attacked: / Player Health: ${this.playerHealth}`);
-      this.gameStatus = checkWinner(this.playerHealth, this.monsterHealth);
-      console.log(`checkWinner: ${checkWinner(this.playerHealth, this.monsterHealth)}`);
-      console.log(`gameStatus: ${this.gameStatus}`);
+      //   this.gameStatus = checkWinner(this.playerHealth, this.monsterHealth);
     },
     attackPlayer() {
       let monsterAttackValue = getRamdomValue(8, 15);
@@ -63,9 +80,7 @@ const app = Vue.createApp({
       console.log(`Special Attacked: / Monster Health: ${this.monsterHealth}`);
       this.attackPlayer();
       console.log(`Monster Attacked: / Player Health: ${this.playerHealth}`);
-      this.gameStatus = checkWinner(this.playerHealth, this.monsterHealth);
-      console.log(`checkWinner: ${checkWinner(this.playerHealth, this.monsterHealth)}`);
-      console.log(`gameStatus: ${this.gameStatus}`);
+      //   this.gameStatus = checkWinner(this.playerHealth, this.monsterHealth);
     },
     healPlayer() {
       this.currentRound++;
@@ -78,9 +93,7 @@ const app = Vue.createApp({
         this.playerHealth += healValue;
       }
       this.attackPlayer;
-      this.gameStatus = checkWinner(this.playerHealth, this.monsterHealth);
-      console.log(`checkWinner: ${checkWinner(this.playerHealth, this.monsterHealth)}`);
-      console.log(`gameStatus: ${this.gameStatus}`);
+      //   this.gameStatus = checkWinner(this.playerHealth, this.monsterHealth);
     },
   },
 });
