@@ -18,7 +18,7 @@ const app = Vue.createApp({
       return { width: this.playerHealth + "%" };
     },
     disableStyle() {
-      return this.currentRound % 3 !== 0
+      return this.currentRound % 3 !== 0;
     },
   },
   methods: {
@@ -43,6 +43,18 @@ const app = Vue.createApp({
       console.log(`Special Attacked: / Monster Health: ${this.monsterHealth}`);
       this.attackPlayer();
       console.log(`Monster Attacked: / Player Health: ${this.playerHealth}`);
+    },
+    healPlayer() {
+      this.currentRound++;
+      
+      let healValue = getRamdomValue(8, 15);
+
+      if (this.playerHealth + healValue > 100){
+          this.playerHealth = 100
+      } else {
+        this.playerHealth += healValue
+      }
+      this.attackPlayer;
     },
   },
 });
